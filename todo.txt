@@ -1,0 +1,14 @@
+ <normalhuman> why not just p(n)-p(n-1) ?
+[20:24:46] <myke> because dividing it by p(n-1) normalizes the difference
+[20:25:17] <myke> 10 to 12 is 2% change
+[20:25:48] <myke>  in this case p(n) - p(n-1) is 0.02
+[20:25:56] <myke> in below case it is 0.2
+[20:25:09] <myke> 1.0 to 1.02 is 2% change
+
+<@myke> ( price(n) - price(n-1) ) / price(n-1)          <--------- price diff (proper - normalized difference)
+
+todo:
+
+check train init weights /random weights / not weighted
+jit randomly
+fann_create_shortcut/sparse

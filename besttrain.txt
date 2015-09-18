@@ -1,0 +1,16 @@
+1268112 0.04907943 (0.04907871) 48.03% | 0.06342673 (0.05082222) 45.28% |
+1268279 0.04907921 (0.04907871) 48.03% | 0.06341154 (0.05082222) 45.38% |
+^CSegmentation fault (core dumped)
+conf# ./train r
+
+Loaded normal network 0x800e091c0. nettype: 0 conn_rate: 1.00 layers: 4 connections: 423 neur: 112
+train: 2
+train classes [  0=1032  1=1032  2=1032  reject=0 ]
+train_data=0x800e11080, count: 3096 input: 100, output: 3, neurons: 0 bestneur: 0
+act funcs: <lay#1  FANN_GAUSSIAN_SYMMETRIC:1.00> <lay#2  FANN_GAUSSIAN_SYMMETRIC:1.00> <lay#3  FANN_SIGMOID_SYMMETRIC_STEPWISE:1.00>
+start training [minmse: 0.049079 (0.049074) minbf: 9101 needbf: 1032 testmse: 0.06338476]
+
+     1 0.04907925 (0.04903508) 39.73% | 0.17258832 (0.06338476) 36.22% |
+^CSegmentation fault (core dumped)
+conf# ./create 4 4 2 3
+conf#

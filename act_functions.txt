@@ -1,0 +1,232 @@
+The steepness of an activation function is defined in the same way by fann_set_activation_steepness_hidden, fann_set_activation_steepness_output and fann_set_activation_steepness.
+
+The functions are described with functions where
+input is the input to the activation function,
+output is the output,
+steepness is the steepness and
+derivation is the derivation.
+
+
+ fann _activationfunc_enum
+   
+	The activation functions used for the neurons during training. The activation functions
+	can either be defined for a group of neurons by  and
+	 or it can be defined for a single neuron by .
+
+	The steepness of an activation function is defined in the same way by 
+	,  and .
+   
+   The functions are described with functions where:
+   * x is the input to the activation function,
+   * y is the output,
+   * s is the steepness and
+   * d is the derivation.
+
+    FANN _LINEAR - Linear activation function. 
+     * span: -inf < y < inf
+	 * y = x*s, d = 1*s
+	 * Can NOT be used in fixed point.
+
+    FANN _THRESHOLD - Threshold activation function.
+	 * x < 0 -> y = 0, x >= 0 -> y = 1
+	 * Can NOT be used during training.
+
+    FANN _THRESHOLD_SYMMETRIC - Threshold activation function.
+	 * x < 0 -> y = 0, x >= 0 -> y = 1
+	 * Can NOT be used during training.
+
+    FANN _SIGMOID - Sigmoid activation function.
+	 * One of the most used activation functions.
+	 * span: 0 < y < 1
+	 * y = 1/(1 + exp(-2*s*x))
+	 * d = 2*s*y*(1 - y)
+
+    FANN _SIGMOID_STEPWISE - Stepwise linear approximation to sigmoid.
+	 * Faster than sigmoid but a bit less precise.
+
+    FANN _SIGMOID_SYMMETRIC - Symmetric sigmoid activation function, aka. tanh.
+	 * One of the most used activation functions.
+	 * span: -1 < y < 1
+	 * y = tanh(s*x) = 2/(1 + exp(-2*s*x)) - 1
+	 * d = s*(1-(y*y))
+
+    FANN _SIGMOID_SYMMETRIC - Stepwise linear approximation to symmetric sigmoid.
+	 * Faster than symmetric sigmoid but a bit less precise.
+
+    FANN _GAUSSIAN - Gaussian activation function.
+	 * 0 when x = -inf, 1 when x = 0 and 0 when x = inf
+	 * span: 0 < y < 1
+	 * y = exp(-x*s*x*s)
+	 * d = -2*x*s*y*s
+
+    FANN _GAUSSIAN_SYMMETRIC - Symmetric gaussian activation function.
+	 * -1 when x = -inf, 1 when x = 0 and 0 when x = inf
+	 * span: -1 < y < 1
+	 * y = exp(-x*s*x*s)*2-1
+	 * d = -2*x*s*(y+1)*s
+	 
+    FANN _ELLIOT - Fast (sigmoid like) activation function defined by David Elliott
+	 * span: 0 < y < 1
+	 * y = ((x*s) / 2) / (1 + |x*s|) + 0.5
+	 * d = s*1/(2*(1+|x*s|)*(1+|x*s|))
+	 
+    FANN _ELLIOT_SYMMETRIC - Fast (symmetric sigmoid like) activation function defined by David Elliott
+	 * span: -1 < y < 1   
+	 * y = (x*s) / (1 + |x*s|)
+	 * d = s*1/((1+|x*s|)*(1+|x*s|))
+
+	 FANN _LINEAR_PIECE - Bounded linear activation function.
+	 * span: 0 < y < 1
+	 * y = x*s, d = 1*s
+	 
+	 FANN _LINEAR_PIECE_SYMMETRIC - Bounded Linear activation function.
+	 * span: -1 < y < 1
+	 * y = x*s, d = 1*s
+	 
+	See also:
+		,
+		
+*/
+enum  fann _activationfunc_enum
+{
+	 FANN _LINEAR = 0,
+	 FANN _THRESHOLD,
+	 FANN _THRESHOLD_SYMMETRIC,
+	 FANN _SIGMOID,
+	 FANN _SIGMOID_STEPWISE,
+	 FANN _SIGMOID_SYMMETRIC,
+	 FANN _SIGMOID_SYMMETRIC_STEPWISE,
+	 FANN _GAUSSIAN,
+	 FANN _GAUSSIAN_SYMMETRIC,
+	/* Stepwise linear approximation to gaussian.
+	 * Faster than gaussian but a bit less precise.
+	 * NOT implemented yet.
+	 */
+	 FANN _GAUSSIAN_STEPWISE,
+	 FANN _ELLIOT,
+	 FANN _ELLIOT_SYMMETRIC,
+	 FANN _LINEAR_PIECE,
+	 FANN _LINEAR_PIECE_SYMMETRIC
+};
+
+/* Constant:  FANN _ACTIVATIONFUNC_NAMES
+   
+   Constant array consisting of the names for the activation function, so that the name of an
+   activation function can be received by:
+   (code)
+   char *name =  FANN _ACTIVATIONFUNC_NAMES[activation_function];
+   (end)
+
+   See Also:
+      
+*/
+static char const *const  FANN _ACTIVATIONFUNC_NAMES[] = {
+	" FANN _LINEAR",
+	" FANN _THRESHOLD",
+	" FANN _THRESHOLD_SYMMETRIC",
+	" FANN _SIGMOID",
+	" FANN _SIGMOID_STEPWISE",
+	" FANN _SIGMOID_SYMMETRIC",
+	" FANN _SIGMOID_SYMMETRIC_STEPWISE",
+	" FANN _GAUSSIAN",
+	" FANN _GAUSSIAN_SYMMETRIC",
+	" FANN _GAUSSIAN_STEPWISE",
+	" FANN _ELLIOT",
+	" FANN _ELLIOT_SYMMETRIC",
+	" FANN _LINEAR_PIECE",
+	" FANN _LINEAR_PIECE_SYMMETRIC"
+};
+
+
+FANN_LINEAR	Linear activation function.
+span: -inf < output < inf
+output = input*steepness, derivation = 1*steepness
+Can NOT be used in fixed point.
+
+FANN_SIGMOID_SYMMETRIC	Symmetric sigmoid activation function, aka. tanh.
+One of the most used activation functions.
+span: -1 < output < 1
+output = tanh(steepness*input) = 2/(1 + exp(-2*steepness*input)) - 1
+derivation = steepness*(1-(output*output))
+
+FANN_SIGMOID_SYMMETRIC	Stepwise linear approximation to symmetric sigmoid.
+Faster than symmetric sigmoid but a bit less precise.
+
+FANN_GAUSSIAN_SYMMETRIC	Symmetric gaussian activation function.
+-1 when input = -inf, 1 when input = 0 and 0 when input = inf
+span: -1 < output < 1
+output = exp(-input*steepness*input*steepness)*2-1
+derivation = -2*input*steepness*(output+1)*steepness
+
+
+FANN_LINEAR_PIECE_SYMMETRIC	Bounded linear activation function.
+span: -1 <= output <= 1
+output = input*steepness, derivation = 1*steepness
+
+FANN_SIN_SYMMETRIC	Periodical sinus activation function.
+span: -1 <= output <= 1
+output = sin(input*steepness)
+derivation = steepness*cos(input*steepness)
+
+FANN_COS_SYMMETRIC	Periodical cosinus activation function.
+span: -1 	<= output <= 1
+output = cos(input*steepness)
+derivation = steepness*-sin(input*steepness)
+
+FANN_ELLIOT_SYMMETRIC	Fast (symmetric sigmoid like) activation function defined by David Elliott
+span: -1 < output < 1
+output = (input*steepness) / (1 + |input*steepness|)
+derivation = steepness*1/((1+|input*steepness|)*(1+|input*steepness|))
+
+
+////////////// 0 1
+
+FANN_SIGMOID	Sigmoid activation function.
+One of the most used activation functions.
+span: 0 < output < 1
+output = 1/(1 + exp(-2*steepness*input))
+derivation = 2*steepness*output*(1 - output)
+
+FANN_SIGMOID_STEPWISE	Stepwise linear approximation to sigmoid.
+Faster than sigmoid but a bit less precise.
+
+FANN_GAUSSIAN	Gaussian activation function.
+0 when input = -inf, 1 when input = 0 and 0 when input = inf
+span: 0 < output < 1
+output = exp(-input*steepness*input*steepness)
+derivation = -2*input*steepness*output*steepness
+
+FANN_ELLIOT	Fast (sigmoid like) activation function defined by David Elliott
+span: 0 < output < 1
+output = ((input*steepness) / 2) / (1 + |input*steepness|) + 0.5
+derivation = steepness*1/(2*(1+|input*steepness|)*(1+|input*steepness|))
+
+FANN_LINEAR_PIECE	Bounded linear activation function.
+span: 0 <= output <= 1
+output = input*steepness, derivation = 1*steepness
+
+
+FANN_SIN	Periodical sinus activation function.
+span: 0 <= output <= 1
+output = sin(input*steepness)/2+0.5
+derivation = steepness*cos(input*steepness)/2
+
+FANN_COS	Periodical cosinus activation function.
+span: 0 <= output <= 1
+output = cos(input*steepness)/2+0.5
+derivation = steepness*-sin(input*steepness)/2
+
+
+/////////////////////
+
+See also
+fann_set_activation_function_layer, fann_set_activation_function_hidden, fann_set_activation_function_output, fann_set_activation_steepness, fann_set_activation_function
+
+
+FANN_THRESHOLD	Threshold activation function.
+input < 0 -> output = 0, input >= 0 -> output = 1
+Can NOT be used during training.
+
+FANN_THRESHOLD_SYMMETRIC	Threshold activation function.
+input < 0 -> output = 0, input >= 0 -> output = 1
+Can NOT be used during training.
