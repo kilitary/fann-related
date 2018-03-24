@@ -1,3 +1,4 @@
+// what u gonna do when wh offline, what u gonna do?
 #include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
