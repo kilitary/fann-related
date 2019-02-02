@@ -56,3 +56,9 @@ software can be compiled under unix/linux/even on playstation if u're from secre
 
  
  that.
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+2 nd stage research:
+
+mutagen https://bitbucket.org/axis9/forexai/wiki/Home
+mutagen user https://bitbucket.org/axis9/forexai_dll_mt4/wiki/Home
