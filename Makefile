@@ -1,4 +1,4 @@
-# (c) 2016 Sergey Efilov (contaminated with 30% of noise)
+# (c) 2016 Sergey Efilov (contaminated with 30% of v2k morons noise)
 all:
 	g++  train.cpp  -o train.exe -O3 -march=nocona   -g  -lfann -lm -Wfatal-errors -w -fpermissive
 	gcc  create.c  -o create.exe  -O3 -march=nocona  -ggdb  -lfann -lm -Wfatal-errors -w
