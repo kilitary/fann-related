@@ -69,4 +69,4 @@ mutagen user https://bitbucket.org/axis9/forexai_dll_mt4/wiki/Home
 
 
 а, и еще.
-ты пидор
+т*ы* пидор
