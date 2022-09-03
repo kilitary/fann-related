@@ -1,4 +1,4 @@
-// what u gonna do when wh offline, what u go nna do
+// what u gonna do when wh off your line, what u go nn ad o?
 #include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -42,4 +42,4 @@ int main(void)
 
 }
 
-#just because not higher s
+#just because not higher sh e
