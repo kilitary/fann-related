@@ -12,3 +12,5 @@ all:
 	#g++  -o lsnn.exe lsnn.c -O3 -march=nocona   -g  -lfann -lm -Wfatal-errors -w
          g++ ctruck.cpp -o cyberDrug -O99 -march=x64 -g -lfann -lm -fpermissive 
 	 # ^ no -w & no -Wfatal-errors ^ chegerap nau
+
+# (c) 2022 Sergey Efilov (contaminated with 79% of v2k morons noise)
