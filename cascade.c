@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <time.h>
 #include <memory.h>
-#include <fann/doublefann.h>
 #include <unistd.h>
+#include "fann_common.h"
 
 struct fann_train_data *train_data, *test_data,*cln_train_data;
 struct fann *ann;

@@ -2,10 +2,7 @@
 #include <signal.h>
 #include <time.h>
 #include <string.h>
-#include <fann/doublefann.h>
-
-#define max(a,b) ((a>b) ? a : b)
-#define min(a,b) ((a<b) ? a : b)
+#include "fann_common.h"
 
 unsigned int num_layers = 3;
 unsigned int num_neurons_hidden = 256;

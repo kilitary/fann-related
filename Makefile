@@ -11,10 +11,10 @@ LIBS = -lfann -lm
 COMMON_OBJ = fann_common.o
 
 # Core utilities
-CORE_TARGETS = train.exe create.exe run.exe data.exe
+CORE_TARGETS = train.exe create.exe run.exe data.exe info.exe
 
 # Optional utilities (uncomment to build)
-OPTIONAL_TARGETS = findnet.exe mutate.exe fann_nor.exe cascade.exe lsnn.exe
+OPTIONAL_TARGETS = findnet.exe mutate.exe fann_nor.exe cascade.exe
 
 .PHONY: all core optional clean
 
@@ -40,6 +40,9 @@ run.exe: run.c $(COMMON_OBJ)
 data.exe: data.cpp $(COMMON_OBJ)
 	$(CXX) $(CXXFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
 
+info.exe: info.c
+	$(CC) $(CFLAGS) $< -o $@ $(LIBS)
+
 findnet.exe: find.cpp $(COMMON_OBJ)
 	$(CXX) $(CXXFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
 
@@ -50,9 +53,6 @@ fann_nor.exe: fann_normal.c $(COMMON_OBJ)
 	$(CC) $(CFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
 
 cascade.exe: cascade.c $(COMMON_OBJ)
-	$(CC) $(CFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
-
-lsnn.exe: lsnn.c $(COMMON_OBJ)
 	$(CC) $(CFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
 
 clean:

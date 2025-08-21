@@ -1,17 +1,14 @@
 /* FANN Neural Network Training Tool
  * Main training utility with multiple algorithms and auto-tuning
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
 #include <memory.h>
 #include <time.h>
-
-#include <fann/doublefann.h>
-
-#define max(a,b) ((a>b) ? a : b)
-#define min(a,b) ((a<b) ? a : b)
+#include "fann_common.h"
 /* Global variables for training state */
 int training_started = 0;
 struct fann *trann = NULL;
@@ -40,7 +37,7 @@ double test_perc, train_perc;
 int effects = 0;
 
 /* Jittering parameters */
-double jitter_value;
+double jitter_current_value;
 int jitter_train = 1;
 int rprop_rand = 0;
 double jit_factor = 0.0001f;
@@ -555,7 +552,7 @@ static int numdoneepochs=0;
             if ((!random_jit&&jit_data&&epochs>2&&start_jit_perc) || (random_jit && rand()%7==3))
             {
                 apply_jjit(train_data, cln_train_data);
-                printf("[jit %.8f => %.8f]",src_jittered_val,jitter_value);
+                printf("[jit %.8f => %.8f]", src_jittered_val, jitter_current_value);
                 //} else {
             }
 
@@ -626,15 +623,13 @@ double jit_value(double src_val)
     maxperc=(double) ((unsigned)rnd%(unsigned)start_jit_perc);
     jpercint=(src_val*(double)maxperc)/(double)100.0f;
 
-    src_jittered_val=src_val;
-    if (rand()%6==2)
-        jitter_value=src_val+jpercint;
+    src_jittered_val = src_val;
+    if (rand() % 6 == 2)
+        jitter_current_value = src_val + jpercint;
     else
-        jitter_value=src_val-jpercint;
+        jitter_current_value = src_val - jpercint;
 
-    //(double) ((double)src_val															 +
-    //										 (double)( (rand()%(unsigned long)()*800000000) *0.00000001)																	);
-    return jitter_value;
+    return jitter_current_value;
 }
 void apply_jjit(struct fann_train_data *data, struct fann_train_data *clean_data)
 {

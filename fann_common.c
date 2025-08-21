@@ -80,6 +80,7 @@ void rebuild_functions_all(struct fann *ann) {
 
 /* Signal handler for graceful termination */
 void sig_term(int p) {
+    (void)p; /* Suppress unused parameter warning */
     printf("\\r\\nsaving network...\\r\\n");
     /* Network saving should be handled by calling code */
     exit(0);

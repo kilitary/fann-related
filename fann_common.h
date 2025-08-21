@@ -9,7 +9,7 @@
 #include <signal.h>
 #include <memory.h>
 #include <time.h>
-#include <fann/doublefann.h>
+#include <doublefann.h>
 
 /* Common macros */
 #define max(a,b) ((a>b) ? a : b)
