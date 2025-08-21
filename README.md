@@ -1,7 +1,7 @@
 fOR Examples 
 
 
-FANN networks [+ forex tasks that was applied to it using this software]
+FANN networkc [+ forex tasks that was applied to it using this software]
 This is just command line tools for FANN. No gui, but many options and real-time switching not only temps/decoys or any other params (u think) affect this. 
 +auto-tuning may train network starting using RPROP or QUICKPROP, then when hit ratio did not changes for example last 25 epochs (stupid ceil counts to examine in train, the will range in 6-53 epochs or any other range u cant imagine coz.) will increase/decrease some parameter it chooses. and u have full control of jittering, which is very important if u want to apply network to data u did not see. 
 with this express-coded "software" u can create (sparse,connected or other FANN type network) ,train using all the methods FANN have,run with different configurations,analyzing where it is BAD TRAIN DATA, that takes big time to understand, especially for ppl that did not read all these super-algebraic pdfs with anylyzing dozen of "crazy-good" documents on the internet while every science-writer adding their situation to problem that it follow to be reached in its train data, it starting temperatures(!! one document say simulated annealing starts at millions of CELCIUS and decreases by 0.002 or smtn steps, while other found that cooling works too (??) , not ranges for examples. 
