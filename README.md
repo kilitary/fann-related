@@ -1,4 +1,4 @@
-For EXample:
+For EXample 
 
 
 FANN networks [+ forex tasks that was applied to it using this software]
@@ -66,7 +66,16 @@ mutagen user https://bitbucket.org/axis9/forexai_dll_mt4/wiki/Home
 
 
 
-
-
 а, и еще.
+
+ed IT: ERROR_SUKCESS
+
+
+
+
 т*ы* пидор
+
+edi T: ERROR_Denied that I 
+
+
+
