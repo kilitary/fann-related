@@ -1,4 +1,4 @@
-//#include <windows.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "fann/doublefann.h"
@@ -21,8 +21,6 @@ int main(int argc,char*argv[])
     }  	
     else
     {
-
-    //    ann = fann_create_from_file ( "train.net" );
         printf("следууюющий!",ffann);
         //return 1;
     }

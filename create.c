@@ -46,8 +46,6 @@ unsigned train_pos = 0;
 unsigned finaltestdatanum=0;
 unsigned *train_matrix;
 unsigned mintest=1044440,maxtest=0;
-
-
 void sig_term ( int p )
 {
     printf ( "\r\nsaving net...\r\n" );
@@ -57,8 +55,6 @@ void sig_term ( int p )
 
 void 	train_func( unsigned int num, unsigned int numinp, unsigned int numout, fann_type * input, fann_type * output)
 {
-
-
     unsigned addthis;
     unsigned i=0;
     unsigned added=0;
@@ -77,25 +73,21 @@ void 	train_func( unsigned int num, unsigned int numinp, unsigned int numout, fa
 
             if (weight_data->output[train_pos][i]==1 && train_classes_added[i]++>=classmin)
             {
-
-
                 addthis=0;
                 break;
             }
-            //printf("%d\r\n",train_classes_added[i]);
+
         }
 
         if (!addthis)
         {
-          //  fprintf(stderr,".");
+
             train_matrix[train_pos]=1;
             train_pos++;
             finaltestdatanum++;
 
             continue;
         }
-
-       // fprintf(stderr,"x");
         train_matrix[train_pos]=0;
         unsigned y;
         for (y=0;y<weight_data->num_input;y++)
@@ -115,12 +107,8 @@ void 	train_func( unsigned int num, unsigned int numinp, unsigned int numout, fa
 
 }
 
-
-
 void 	test_train_func( unsigned int num, unsigned int numinp, unsigned int numout, fann_type * input, fann_type * output)
 {
-
-    // if (num>finaldatanum)
     //  return;
 
     unsigned addthis;
@@ -133,7 +121,7 @@ unsigned y;
 
         if (!train_matrix[train_pos])
         {
-           // printf(".");
+
             train_pos++;
             //	finaltestdatanum++;
             continue;
@@ -156,8 +144,6 @@ unsigned y;
 					continue;
 				}
 
-      //  printf("x");
-
         
         for (y=0;y<weight_data->num_input;y++)
         {
@@ -173,8 +159,6 @@ unsigned y;
         added=1;
         train_pos++;
     }
-
-
 }
 
 int main ( int argc, char **argv )
@@ -188,7 +172,7 @@ int main ( int argc, char **argv )
 
     if (argc>2)
     {
-        //desired_error=atof(argv[2]);
+
         numn=atoi(argv[1]);
         l1n=atoi(argv[2]);
         if (argc>3)
@@ -220,25 +204,17 @@ int main ( int argc, char **argv )
         exit(0);
 		
 
-    // fann_scale_train_data ( train_data, 0, 1.54 );
-    //  fann_scale_train_data ( test_data, 0, 1.54 );
     weight_data=fann_merge_train_data(train_data,test_data);
 
     cln_weight_data=fann_duplicate_train_data(weight_data);
     cln_test_data=fann_duplicate_train_data(test_data);
     cln_train_data=fann_duplicate_train_data(train_data);
 
-    //num_neurons_hidden = atoi ( argv[1] );
-
-
-
     unsigned num=0;
     unsigned y;
     unsigned u;
     unsigned x;
     unsigned reject;
-
-
     unsigned best_neur1,best_neur;
     best_neur1=((unsigned)fann_length_train_data(train_data)/
 			(unsigned)train_data->num_input)/(unsigned)train_data->num_output-numn;
@@ -274,97 +250,35 @@ int main ( int argc, char **argv )
         }
 
         unsigned mintraining=0;
-//			for(int i=0;i<numn;i++)
+
         mintraining=(fann_get_total_neurons(ann)*(numn*4*2));
 
         printf ( "Creating normal network %p conn_rate: %.2f. minimum cases: %u, %.2f per class",ann ,conn_rate,mintraining,
                  ((double)mintraining*0.9/(double)weight_data->num_output));
 
-        // fann_init_weights ( ann, train_data );
-
-       // fann_set_activation_function_hidden ( ann,FANN_SIGMOID_SYMMETRIC);
-   //     fann_set_activation_function_output ( ann,FANN_SIGMOID_SYMMETRIC );//FANN_SIGMOID_SYMMETRIC
 			fann_set_activation_steepness_hidden(ann, 1);
 			fann_set_activation_steepness_output(ann, 1);
-
-        //	 fann_set_activation_function_layer(ann, FANN_SIGMOID_STEPWISE ,1);
-        // fann_set_activation_function_layer(ann,FANN_ELLIOT ,2);
-        // fann_set_activation_function_layer(ann,  FANN_GAUSSIAN_SYMMETRIC,3);
-
-
-        //fann_set_activation_function_layer(ann,FANN_LINEAR_PIECE_SYMMETRIC,5);
-
-        //	fann_set_activation_steepness_layer(ann, 0.65f, 1);
-        //	fann_set_activation_steepness_layer(ann, 1.0f, 2);
-        //fann_set_activation_steepness_layer(ann, 1.0f, 3);
-        //fann_set_activation_steepness_layer(ann, 1.0f, 4);
-        //fann_set_activation_steepness_layer(ann, 0.25f, 5);
-
-        //	fann_set_activation_steepness_layer(ann, 1.0f, 2);
-
-        //fann_set_activation_steepness_layer(ann, 1.0f, 1);
-
-        // 	fann_set_bit_fail_limit(ann, 0.08f);
-
-
-
 				fann_init_weights(ann, train_data);
 
-
-
         fann_set_training_algorithm ( ann, FANN_TRAIN_RPROP );
-
-
-        //  fann_set_activation_steepness_layer(ann, 1.0f, 1);
-
-
-       //  fann_randomize_weights ( ann, -1.0f, 1.0f );
 
         /*    if (fann_set_scaling_params(ann, train_data,-1.0f,1.0f,0.0f, 1.0f)==-1)
            printf("set scaling error\n");
         fann_scale_train(ann,train_data);
-        //fann_scale_train(ann,weight_data);
-        //    if (fann_set_scaling_params(ann, test_data,-1.0f,1.0f,-1.0f, 1.0f)==-1)
-        //	printf("set scaling error\n");
-        fann_scale_train(ann,test_data); */
 
-        //	fann_set_rprop_increase_factor(ann, 1.3f);
+        fann_scale_train(ann,test_data); */
     }
     else
     {
-        //    fann_scale_train(ann,train_data);
-        //   fann_scale_train(ann,weight_data);
-//		fann_scale_train(ann,test_data);
+
         fann_set_training_algorithm ( ann, FANN_TRAIN_RPROP);
-
-
     }
 
     rebuild_functions();
-
-
     printf ( "input: %u, output: %u, neurons: %u best_neur1: %u best_neur: %u" ,
              weight_data->num_input, weight_data->num_output, num_neurons_hidden,
              best_neur1,best_neur);
-
-//   fann_set_activation_steepness_layer(ann, 0.75f, 1);
-    //fann_set_activation_steepness_layer(ann, 0.25f, 2);
-
-    //  fann_set_train_error_function ( ann, FANN_ERRORFUNC_LINEAR );
-    // fann_set_train_stop_function(ann, FANN_STOPFUNC_MSE);
     nextalgo=fann_get_training_algorithm ( ann ) ;
-
-    // fann_set_bit_fail_limit ( ann, ( fann_type ) 0.035f );
-
-//   fann_set_callback ( ann, train_callback );
-
-    //fann_scale_output_train_data(cln_train_data);
-    //fann_scale_output_train_data(cln_test_data);
-
-    //  fann_scale_train_data(test_data,-0.00843000, 0.01202000);
-//   fann_reset_MSE ( ann );
-    // fann_train_on_data ( ann, train_data, max_epochs, epochs_between_reports, desired_error );
-
     /*  printf ( "Testing network.\n" );
 
       test_data = fann_read_train_from_file ( "bb-train.test" );
@@ -377,21 +291,17 @@ int main ( int argc, char **argv )
 
       printf ( "MSE error on test data: %f\n", fann_get_MSE ( ann ) );
       */
-    // printf ( "\r\n\ttarget reached. saving network.\n" );
-
 
     classmin=fann_length_train_data(weight_data);
     printf("\r\ntrain classes: [");
     for ( y=0;y<weight_data->num_output;y++)
     {
-
-
         num=0;
         for (u=0;u<fann_length_train_data(weight_data);u++)
             if (weight_data->output[u][y]==1.0f)
                 num++;
 					//	else 
-						//	printf("%.2f ",weight_data->output[u][y]);
+
         if (num<classmin)
             classmin=num;
 
@@ -407,10 +317,10 @@ int main ( int argc, char **argv )
             if (weight_data->output[j][x]<=0.0f)
                 reject++;
         //	else if(reject)
-        //	printf("no %u ok - %f\n",reject,train_data->output[j][x]);
+
         if (reject>=weight_data->num_output)
         {
-            //	printf(" rule %u: %.4f %.4f %.4f\n", j, train_data->output[j][0],
+
             //	train_data->output[j][1],
             //	train_data->output[j][2]);
             reject_total++;
@@ -426,21 +336,13 @@ int main ( int argc, char **argv )
 		}	
 
     classmin-=30;
-    //classmin=100;
+
     finaldatanum=((unsigned)classmin*((unsigned)weight_data->num_output));
-
-
     printf ( "\r\ntrain_data=%p, count: %u input: %u, output: %u, neurons: %u bestneur: %u finaldata: %u classmin: %u left: %u",
              weight_data, fann_length_train_data(weight_data), weight_data->num_input, weight_data->num_output, num_neurons_hidden,
              best_neur,finaldatanum,classmin,fann_length_train_data(weight_data)-finaldatanum);
-
-
-
-
     for ( l=0;l<weight_data->num_output;l++)
         train_classes_added[l]=0;
-
-
 
     train_matrix = (unsigned*) malloc(sizeof(unsigned)*fann_length_train_data(weight_data)*2);
 
@@ -463,13 +365,11 @@ memset(classes,sizeof(classes),0);
 		if (final_data->output[y][u]==1.0f)
 		{
 			classes[u]++;
-			//printf("%c",chars[u]);
+
 			num++;
 		}
-		// if (num<classmin)
-		//   classmin=num;
 		
-		//printf(" %u=%d ", y, num);
+
 	}
 	printf("\r\nclasses [ ");
 	for (i=0;i<final_data->num_output;i++)
@@ -479,15 +379,11 @@ memset(classes,sizeof(classes),0);
     train_pos=0;
 
     finaltestdatanum=fann_length_train_data(weight_data)-finaldatanum;
-
-
 		
-    //for(l=0;l<weight_data->num_output;l++)
-			//if(left_classes[l]<mintest)
-				//mintest=left_classes[l];
+
 				
     maxtest=mintest;
-   // finaltestdatanum=maxtest*weight_data->num_output;
+
     printf("\r\ncreating %u test data [maxtest %u] ... ", finaltestdatanum,maxtest);
 
     for ( l=0;l<weight_data->num_output;l++)
@@ -510,30 +406,14 @@ memset(classes,sizeof(classes),0);
             if (final_test_data->output[y][u]==1.0f)
             {
                 classes[u]++;
-                //printf("%c",chars[u]);
+
                 num++;
             }
-        // if (num<classmin)
-        //   classmin=num;
-
-        //printf(" %u=%d ", y, num);
     }
     printf("\r\nclasses [ ");
     for (i=0;i<final_test_data->num_output;i++)
         printf("%u=%u ",i,classes[i]);
     printf("] ");
-
-//	if (fann_set_scaling_params(ann, final_data,-1.0f,1.0f,0.0f, 1.0f)==-1)
-    //printf("set scaling error: %s\n",fann_get_errno(ann));
-
-    //   fann_scale_train_input(ann,train_data);
-    // fann_scale_output_train_data(train_data,0.0f,1.0f);
-    //   fann_scale_input_train_data(train_data, -1.0,0.0f);
-    // fann_scale_output_train_data(test_data,-1.0f,1.0f);
-    // fann_scale_input_train_data(test_data, -1.0,1.0f);
-//	fann_scale_train(ann,final_data);
-    //  fann_scale_train(ann,weight_data);
-    //    fann_scale_train(ann,test_data);
     printf ( "ok\r\nsaving ...\n\r" );
     fann_save_train(final_data, "train.dat");
     fann_save_train(final_test_data, "test.dat");
@@ -543,10 +423,6 @@ memset(classes,sizeof(classes),0);
     printf ( "Cleaning up.\n" );
 
     
-
-   // fann_destroy_train ( train_data );
-   // fann_destroy_train ( test_data );
-   // fann_destroy ( ann );
 
     return 0;
 }
@@ -588,16 +464,10 @@ void rebuild_functions(void)
             nfunc=FANN_SIGMOID_SYMMETRIC_STEPWISE;//out_functions[rand()%((sizeof(out_functions)/sizeof(int)))];
         else
             nfunc=sygm_functions[rand()%((sizeof(sygm_functions)/sizeof(int)))];
-        //	printf("nfunc %u",nfunc);
-        //   if (nfunc==1||nfunc==2)
-        //     nfunc=FANN_LINEAR_PIECE_SYMMETRIC;
-
         double stp;
 
         stp=rand()  % 100;
 
-        //if(l==1)
-        //	nfunc=FANN_SIGMOID_STEPWISE;
         stp=0.1+(stp*0.01);
         if (l==numn-1||l==1)
             stp=1.0f;
@@ -607,8 +477,6 @@ void rebuild_functions(void)
         fann_set_activation_function_layer(ann,nfunc,l);
         printf("\r\n #%-02d %s <%-4.02f l", FANN_ACTIVATIONFUNC_NAMES[	fann_get_activation_function(ann,l,0)],
                fann_get_activation_steepness(ann,l,0));
-
-
     }
     printf("]\r\n");
 }

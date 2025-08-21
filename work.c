@@ -20,7 +20,7 @@ int main(void)
 			
         memset(&fd, 0x0, sizeof(fd));
         fh = FindFirstFile("e:\\work\\*.wav", &fd);
-        // deb("dump fh: %x", fh);
+
 				curc=c;
         if (fh != INVALID_HANDLE_VALUE)
         {
@@ -36,7 +36,7 @@ int main(void)
 				sprintf(fn,"e:\\work\\%s",fd.cFileName);
         ret=PlaySound(fn,NULL,SND_FILENAME);
 				curc=0;
-       // printf("%d %d",ret,GetLastError());
+
     }
     return 0;
 

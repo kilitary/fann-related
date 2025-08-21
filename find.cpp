@@ -48,8 +48,6 @@ unsigned train_pos = 0;
 unsigned finaltestdatanum=0;
 unsigned *train_matrix;
 double test_perc,train_perc;
-
-
 void sig_term ( int p )
 {
     printf ( "\r\nsaving net...\r\n" );
@@ -59,8 +57,6 @@ void sig_term ( int p )
 
 void 	train_func( unsigned int num, unsigned int numinp, unsigned int numout, fann_type * input, fann_type * output)
 {
-
-
     int addthis;
     int i;
     int added=0;
@@ -83,20 +79,18 @@ void 	train_func( unsigned int num, unsigned int numinp, unsigned int numout, fa
                 addthis=0;
                 break;
             }
-            //printf("%d\r\n",train_classes_added[i]);
+
         }
 
         if (!addthis)
         {
-            //	fprintf(stderr,"x");
+
             train_matrix[train_pos]=1;
             train_pos++;
             finaltestdatanum++;
 
             continue;
         }
-
-        //	fprintf(stderr,".");
         train_matrix[train_pos]=0;
         int y;
         for (y=0;y<weight_data->num_input;y++)
@@ -116,8 +110,6 @@ void 	train_func( unsigned int num, unsigned int numinp, unsigned int numout, fa
 
 }
 
-
-
 void 	test_train_func( unsigned int num, unsigned int numinp, unsigned int numout, fann_type * input, fann_type * output)
 {
 
@@ -134,13 +126,11 @@ void 	test_train_func( unsigned int num, unsigned int numinp, unsigned int numou
 
         if (!train_matrix[train_pos])
         {
-            //	printf("x");
+
             train_pos++;
             //	finaltestdatanum++;
             continue;
         }
-
-        //printf(".");
 
         int y;
         for (y=0;y<weight_data->num_input;y++)
@@ -157,14 +147,10 @@ void 	test_train_func( unsigned int num, unsigned int numinp, unsigned int numou
         added=1;
         train_pos++;
     }
-
-
 }
 
 int ftest_data(void)
 {
-    //	sar_start_epoch=0;
-    //  printf("\r\n\r\n--------------------------------------------------------------------------------");
 
     double val_2[10];
     fann_type *calc_out2;
@@ -180,20 +166,8 @@ int ftest_data(void)
     {
 
         calc2=curi;//rand()%(fann_length_train_data(train_data)-1);
-        //printf("\r\ntesting %u %u ",calc1,calc2);
-        //fann_scale_input(ann, test_data->input[calc1]);
-        //fann_scale_input(ann, train_data->input[calc2]);
-        //	fann_scale_output(ann, test_data->input[calc1]);
-
-        //fann_scale_input(ann, train_data->input[calc2]);
         calc_out2 = fann_run(ann, train_data->input[calc2]);
-        //	fann_descale_output(ann,calc_out2);
-
         memcpy(&val_2,  calc_out2, sizeof(double)*3);
-
-
-
-
 
         minv=9;
         maxv=-1;
@@ -223,7 +197,7 @@ int ftest_data(void)
 
     }
     train_perc=((double)success/(double)fann_length_train_data(train_data))*100.0f;
-    //printf(" fails %.0f success %.0f (%5.2f%%) ",
+
     //fails,success,perc
     //);
 
@@ -234,20 +208,8 @@ int ftest_data(void)
     {
 
         calc2=curi;//rand()%(fann_length_train_data(train_data)-1);
-        //printf("\r\ntesting %u %u ",calc1,calc2);
-        //fann_scale_input(ann, test_data->input[calc1]);
-        //fann_scale_input(ann, train_data->input[calc2]);
-        //	fann_scale_output(ann, test_data->input[calc1]);
-
-        //fann_scale_input(ann, train_data->input[calc2]);
         calc_out2 = fann_run(ann, test_data->input[calc2]);
-        //	fann_descale_output(ann,calc_out2);
-
         memcpy(&val_2,  calc_out2, sizeof(double)*3);
-
-
-
-
 
         minv=9;
         maxv=-1;
@@ -277,30 +239,20 @@ int ftest_data(void)
 
     }
     test_perc=((double)success/(double)fann_length_train_data(test_data))*100.0f;
-    //printf(" fails %.0f success %.0f (%5.2f%%) ",
+
     //fails,success,perc
     //);
-
-    // fann_set_activation_function_hidden ( ann,  rand()*0.81);
-    // printf("\r\n rpropfact dec/inc r %.5f %.5f lr %.5f mom %.5f",fann_get_rprop_decrease_factor(ann),fann_get_rprop_increase_factor(ann), fann_get_learning_rate ( ann),
-    //       fann_get_learning_momentum(ann));
-
-    //	rebuild_functions();
-
-
 }
 int main ( int argc, char **argv )
 {
     srand(time(NULL));
     if ( argc<=1 )
     {
-        //      printf ( "neuro num\r\n" );
-        //     exit ( 0 );
     }
 
     if (argc>2)
     {
-        //desired_error=atof(argv[2]);
+
         numn=atoi(argv[1]);
         l1n=atoi(argv[2]);
         if (argc>3)
@@ -330,8 +282,6 @@ int main ( int argc, char **argv )
     cln_test_data=fann_duplicate_train_data(test_data);
     cln_train_data=fann_duplicate_train_data(train_data);
 
-    //num_neurons_hidden = atoi ( argv[1] );
-
     unsigned epochs=0;
     double best_perc;
     double prev_epoch_mse=1;
@@ -351,7 +301,7 @@ int main ( int argc, char **argv )
         for (y=1;y<215;y++)
         {
             conn_rate=0.5f+((rand()%50)*0.01f);
-            //  printf("create network: layers=%d l1n=%d l2n=%d l3n=%d l4n=%d\ l5n=%d l6n=%dr\n",numn,l1n,l2n,l3n,l4n,l5n,l6n);
+
             ann = fann_create_standard (//conn_rate,
                       3,
                       train_data->num_input,
@@ -368,8 +318,6 @@ int main ( int argc, char **argv )
 
             fann_set_activation_function_hidden(ann,FANN_SIGMOID);
             fann_set_activation_function_output(ann,FANN_SIGMOID);
-
-            //  rebuild_functions(y);
             fann_set_training_algorithm ( ann, FANN_TRAIN_RPROP );
 
             got_inc=0;
@@ -387,17 +335,11 @@ int main ( int argc, char **argv )
                 {
                     //	u--;
 
-
-                    //		printf("%f",test_perc);
-                    //	fann_destroy(ann);
-                    //	ann=fann_copy(good_ann);
                     best_perc=test_perc;
                     printf("%6.2f",test_perc);
 
                 }
                 else                {
-                    //best_perc=test_perc;
-                    //		printf("x");
                     printf(".");
 
                     if (epochs-last_stat_epoch>=50)
@@ -405,9 +347,7 @@ int main ( int argc, char **argv )
 
                         last_stat_epoch=epochs;
                     }
-                    //		fann_destroy(ann);
-                    //	ann=fann_copy(good_ann);
-                    //fann_randomize_weights ( ann, -((rand()%100)*0.01f), ((rand()%100)*0.01f) );
+
                 }
                 got_inc=test_perc-prev_epoch_mse;
                 prev_epoch_mse=best_perc;
@@ -415,8 +355,6 @@ int main ( int argc, char **argv )
                 epochs++;
             }
             printf(" %6.2f inc: %.2f",test_perc,got_inc);
-//            printf("%6.2f %6.2f",train_perc,test_perc);
-
             fann_destroy ( ann );
         }
     }
@@ -455,10 +393,8 @@ void rebuild_functions(int neur)
 
     int l=1,a=0;
 
-
-
     numn=fann_get_num_layers(ann);
-    // printf("\r\n[ act funcs: ");
+
     for (l=1;l<2;l++)
     {
         int sta;
@@ -476,16 +412,10 @@ void rebuild_functions(int neur)
                 nfunc=functions[rand()%((sizeof(functions)/sizeof(int)))];
             else
                 nfunc=functions[rand()%((sizeof(functions)/sizeof(int)))];
-            //	printf("nfunc %d",nfunc);
-            //   if (nfunc==1||nfunc==2)
-            //     nfunc=FANN_LINEAR_PIECE_SYMMETRIC;
-
             double stp;
 
             stp=rand()  % 100;
 
-            //if(l==1)
-            //	nfunc=FANN_SIGMOID_STEPWISE;
             stp=0.1+(stp*0.01);
             if (l==numn-1||l==1)
                 stp=1.0f;
@@ -496,15 +426,9 @@ void rebuild_functions(int neur)
             char chars[]={'q','w','e','r','t','y','u','i','o','z','x','c','v','b','n','a','s','d','f','g','h'};
 
             printf("%c",chars[nfunc]);
-            //	printf("\r\nset %d %d",l,a);
+
             fann_set_activation_function(ann,nfunc,l,a);
-            //   printf("\r\n #%-02d %s <%-4.02f55l, FANN_ACTIVATIONFUNC_NAMES[	fann_get_activation_function(ann,l,0)],
-            //       fann_get_activation_steepness(ann,l,0));
 
         }
     }
-    // printf("]\r\n");
-
-
-
 }

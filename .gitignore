@@ -1,0 +1,31 @@
+# Compiled executables
+*.exe
+*.o
+
+# Backup files
+*.backup
+
+# Training data and networks (comment out if you want to include them)
+*.dat
+*.net
+
+# Training history and temporary files
+*_hist.dat
+train.layout
+
+# Log files
+*.log
+
+# IDE files
+.vscode/
+*.cbp
+*.depend
+*.layout
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+core
+core.*

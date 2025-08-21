@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <windows.h>
+
 #include <time.h>
 #include <memory.h>
 #include <fann/doublefann.h>
@@ -24,8 +24,6 @@ int func_num=0;
 int lowest_test_mse_epoch=0;
 double jitter_factor=0.001f;
 double test_perc,train_perc;
-
-
 double jitt_value;
 
 char histfile[]="cascade_hist.dat";
@@ -42,19 +40,15 @@ void plot(double p1, double p2,double p3,double p4,double p5)
 void jitter_train(struct fann_train_data *data, struct fann_train_data *clean_data)
 {
     int i;
-
-
     int inc;
     inc=rand()%2;
-    //	printf("[jit %f] ",jitt_value);
-    //exit(0);
     for (i=0;i<fann_length_train_data(clean_data);i++)
     {
         int x;
 
         for (x=0;x<data->num_input;x++)
         {
-            //if (rand()%3)
+
             jitt_value=((rand()%1000)*jitter_factor);
             if (inc)
                 data->input[i][x]=clean_data->input[i][x]-jitt_value;
@@ -65,8 +59,6 @@ void jitter_train(struct fann_train_data *data, struct fann_train_data *clean_da
 }
 int ftest_data(void)
 {
-    //	sar_start_epoch=0;
-    //  printf("\r\n\r\n--------------------------------------------------------------------------------");
 
     double val_2[10];
     fann_type *calc_out2;
@@ -82,20 +74,8 @@ int ftest_data(void)
     {
 
         calc2=curi;//rand()%(fann_length_train_data(train_data)-1);
-        //printf("\r\ntesting %u %u ",calc1,calc2);
-        //fann_scale_input(ann, test_data->input[calc1]);
-        //fann_scale_input(ann, train_data->input[calc2]);
-        //	fann_scale_output(ann, test_data->input[calc1]);
-
-        //fann_scale_input(ann, train_data->input[calc2]);
         calc_out2 = fann_run(ann, train_data->input[calc2]);
-        //	fann_descale_output(ann,calc_out2);
-
         memcpy(&val_2,  calc_out2, sizeof(double)*3);
-
-
-
-
 
         minv=9;
         maxv=-1;
@@ -125,7 +105,7 @@ int ftest_data(void)
 
     }
     train_perc=(success/fann_length_train_data(train_data))*100.0f;
-    //printf(" fails %.0f success %.0f (%5.2f%%) ",
+
     //fails,success,perc
     //);
 
@@ -136,20 +116,8 @@ int ftest_data(void)
     {
 
         calc2=curi;//rand()%(fann_length_train_data(train_data)-1);
-        //printf("\r\ntesting %u %u ",calc1,calc2);
-        //fann_scale_input(ann, test_data->input[calc1]);
-        //fann_scale_input(ann, train_data->input[calc2]);
-        //	fann_scale_output(ann, test_data->input[calc1]);
-
-        //fann_scale_input(ann, train_data->input[calc2]);
         calc_out2 = fann_run(ann, test_data->input[calc2]);
-        //	fann_descale_output(ann,calc_out2);
-
         memcpy(&val_2,  calc_out2, sizeof(double)*3);
-
-
-
-
 
         minv=9;
         maxv=-1;
@@ -179,20 +147,10 @@ int ftest_data(void)
 
     }
     test_perc=(success/fann_length_train_data(test_data))*100.0f;
-    //printf(" fails %.0f success %.0f (%5.2f%%) ",
+
     //fails,success,perc
     //);
-
-    // fann_set_activation_function_hidden ( ann,  rand()*0.81);
-    // printf("\r\n rpropfact dec/inc r %.5f %.5f lr %.5f mom %.5f",fann_get_rprop_decrease_factor(ann),fann_get_rprop_increase_factor(ann), fann_get_learning_rate ( ann),
-    //       fann_get_learning_momentum(ann));
-
-    //	rebuild_functions();
-
-
 }
-
-
 int FANN_API cascade_callback
 ( struct fann *ann, struct fann_train_data *train,
   unsigned int max_epochs, unsigned int epochs_between_reports,
@@ -203,8 +161,6 @@ int FANN_API cascade_callback
     bit_fail_train = fann_get_bit_fail ( ann );
     mse_test = fann_test_data ( ann, test_data );
     bit_fail_test = fann_get_bit_fail ( ann );
-
-
     if (mse_test<min_mse_test)
     {
         fann_save ( ann, "cascaded-test.net" );
@@ -219,26 +175,16 @@ int FANN_API cascade_callback
     }
 
     plot((double)epochs,mse_train,mse_test,train_perc/100,test_perc/100);
-
-    // if ( prev_mse < mse_test && last_bads++>=3 )
     // {
 
     // do
     // {
-    // func_num=func_num+rand() %6;
-    // activation[0] = ( enum fann_activationfunc_enum ) func_num;
-    // fann_set_cascade_activation_functions ( ann, activation, 1 );
-    // printf ( "\n   Over-fitting. new func %s", FANN_ACTIVATIONFUNC_NAMES[func_num] );
-    // }
-    // while ( fann_get_errno ( ( struct fann_error* ) ann ) == 12 );
 
-    // last_bads=0;
-    // func_num=0;
+    // activation[0] = ( enum fann_activationfunc_enum ) func_num;
+    // }
     // }
     // else if ( last_bads>=1 && prev_mse > mse_test )
     // last_bads--;
-
-    // prev_mse = mse_test;
     ftest_data();
     printf
     ( "\n %5d %4d %.08f %5.2f%% (%.08f) | %.08f %5.2f%% (%.08f e=%d) | %-4d  %-4d %.2lf %s",
@@ -247,8 +193,6 @@ int FANN_API cascade_callback
       ( ann->last_layer - 2 )->first_neuron->activation_steepness,
       FANN_ACTIVATIONFUNC_NAMES[ ( ann->last_layer -
                                    2 )->first_neuron->activation_function] );
-
-    //  fann_save ( ann, "cascaded.net" );
     jitter_train(train, cln_train_data);
     return 0;
 
@@ -256,24 +200,18 @@ int FANN_API cascade_callback
 void sig_term ( int p )
 {
     printf ( "\r\nsaving net...\r\n" );
-    // fann_save ( ann, "cascaded.net" );
+
     exit ( 0 );
 };
 int main(int argc,char **argv)
 {
     unlink(histfile);
     srand ( time ( NULL ) );
-    // printf ( "Reading data.\n" );
+
     train_data = fann_read_train_from_file ( "train.dat" );
     test_data = fann_read_train_from_file ( "test.dat" );
-//   signal ( 2, sig_term );
 
-    //  fann_scale_train_data ( train_data, 0, 1.54 );
-    // fann_scale_train_data ( test_data, 0, 1.54 );
-    //cln_test_data=fann_duplicate_train_data(test_data);
     cln_train_data=fann_duplicate_train_data(train_data);
-
-
     printf ( "Creating cascaded network.\n" );
     ann =
         fann_create_shortcut ( 2, fann_num_input_train_data ( train_data ),
@@ -282,30 +220,12 @@ int main(int argc,char **argv)
     fann_set_activation_function_hidden ( ann, FANN_SIGMOID );
     fann_set_activation_function_output ( ann, FANN_SIGMOID);
     fann_set_train_error_function ( ann, FANN_ERRORFUNC_LINEAR );
-
-    //  if (fann_set_scaling_params(ann, train_data,-1.0f,1.0f,0.0f, 1.0f)==-1)
-    //    printf("set scaling error: %s\n",fann_get_errno((struct fann_error*)ann));
-
-    //    fann_scale_train_input(ann,train_data);
-    // fann_scale_output_train_data(train_data,0.0f,1.0f);
-//	   fann_scale_input_train_data(train_data, -1.0,1.0f);
-    // fann_scale_output_train_data(test_data,-1.0f,1.0f);
-    // fann_scale_input_train_data(test_data, -1.0,1.0f);
-//fann_scale_train(ann,train_data);
-    //  fann_scale_train(ann,weight_data);
-    //  fann_scale_train(ann,test_data);
     /*
      * fann_set_cascade_output_change_fraction(ann, 0.1f);
      *  ;
      * fann_set_cascade_candidate_change_fraction(ann, 0.1f);
      *
      */
-
-
-    //  fann_set_cascade_output_stagnation_epochs ( ann, 180 );
-
-    //fann_set_cascade_weight_multiplier ( ann, ( fann_type ) 0.1f );
-
 
     fann_set_callback ( ann, cascade_callback );
     if ( !multi )
@@ -331,8 +251,6 @@ int main(int argc,char **argv)
          *  steepness = 0.5;
          *
          */
-        // fann_set_cascade_activation_steepnesses ( ann, steepness, 2);
-
         /*
          * activation = FANN_SIN_SYMMETRIC;
          */
@@ -375,16 +293,12 @@ int main(int argc,char **argv)
          * fann_set_cascade_activation_steepnesses(ann, &steepness, 0.75);
          *
          */
-        // fann_set_cascade_num_candidate_groups ( ann, 1 );
-
     }
 
     /* TODO: weight mult > 0.01 */
     /*  if ( training_algorithm == FANN_TRAIN_QUICKPROP )
       {
           fann_set_learning_rate ( ann, 0.35f );
-
-
       }
       else
       {
@@ -398,15 +312,7 @@ int main(int argc,char **argv)
      *
      */
 
-    //fann_scale_output_train_data(train_data,0.0f,1.0f);
-    //fann_scale_input_train_data(train_data, -1.0f,1.0f);
-//	fann_scale_output_train_data(test_data, 0.0f,1.0f);
-    //fann_scale_input_train_data(test_data, -1.0f,1.0f);
-
-    // fann_randomize_weights ( ann, -0.2f, 0.2f );
     fann_init_weights ( ann, train_data );
-
-
 
     printf ( "Training network.\n" );
     fann_cascadetrain_on_data ( ann, train_data, max_neurons,
@@ -422,7 +328,7 @@ int main(int argc,char **argv)
 
     printf ( "Saving cascaded network.\n" );
     fann_save ( ann, "cascaded.net" );
-    //  printf ( "Cleaning up.\n" );
+
     fann_destroy_train ( train_data );
     fann_destroy_train ( test_data );
     fann_destroy ( ann );

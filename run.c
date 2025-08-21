@@ -47,8 +47,6 @@ void rebuild_functions(void);
 unsigned train_pos = 0;
 unsigned finaltestdatanum=0;
 unsigned *train_matrix;
-
-
 void sig_term ( int p )
 {
     printf ( "\r\nsaving net...\r\n" );
@@ -58,8 +56,6 @@ void sig_term ( int p )
 
 void 	train_func( unsigned int num, unsigned int numinp, unsigned int numout, fann_type * input, fann_type * output)
 {
-
-
     int addthis;
     int i;
     int added=0;
@@ -82,20 +78,18 @@ void 	train_func( unsigned int num, unsigned int numinp, unsigned int numout, fa
                 addthis=0;
                 break;
             }
-            //printf("%d\r\n",train_classes_added[i]);
+
         }
 
         if (!addthis)
         {
-            //	fprintf(stderr,"x");
+
             train_matrix[train_pos]=1;
             train_pos++;
             finaltestdatanum++;
 
             continue;
         }
-
-        //	fprintf(stderr,".");
         train_matrix[train_pos]=0;
         int y;
         for (y=0;y<weight_data->num_input;y++)
@@ -115,8 +109,6 @@ void 	train_func( unsigned int num, unsigned int numinp, unsigned int numout, fa
 
 }
 
-
-
 void 	test_train_func( unsigned int num, unsigned int numinp, unsigned int numout, fann_type * input, fann_type * output)
 {
 
@@ -133,13 +125,11 @@ void 	test_train_func( unsigned int num, unsigned int numinp, unsigned int numou
 
         if (!train_matrix[train_pos])
         {
-            //	printf("x");
+
             train_pos++;
             //	finaltestdatanum++;
             continue;
         }
-
-        //printf(".");
 
         int y;
         for (y=0;y<weight_data->num_input;y++)
@@ -156,8 +146,6 @@ void 	test_train_func( unsigned int num, unsigned int numinp, unsigned int numou
         added=1;
         train_pos++;
     }
-
-
 }
 
 int main ( int argc, char **argv )
@@ -166,17 +154,13 @@ int main ( int argc, char **argv )
 		char netname[255]="train.net" ;
     if ( argc<=1 )
     {
-      //  printf ( "neuro num\r\n" );
-     //   exit ( 0 );
     }
 char filename[255]="train.dat";
     if (argc>1)
     {
 			strcpy(netname,argv[1]);
 			strcpy(filename,argv[2]);
-        //desired_error=atof(argv[2]);
-     //   filename=atoi(argv[1]);
-       // filename=atoi(argv[2]);
+
         if (argc>3)
             l2n=atoi(argv[3]); 
         if (argc>4)
@@ -197,10 +181,6 @@ char filename[255]="train.dat";
 
 		
     train_data = fann_read_train_from_file ( filename);
-		//printf("[test] ");
-  //  test_data = fann_read_train_from_file ( "test.dat" );
-
-    //weight_data=fann_merge_train_data(train_data,test_data);
 		
 	if ( ( ann = fann_create_from_file ( netname) ) !=NULL )
 	{
@@ -209,7 +189,7 @@ char filename[255]="train.dat";
 		fann_get_num_layers(ann),
 		fann_get_total_connections(ann),
 		fann_get_total_neurons(ann));
-		//fann_print_connections(ann);
+
 		
 	}
 	else
@@ -217,8 +197,6 @@ char filename[255]="train.dat";
 		printf("no network");
 		return 1;
 	}
-
-
     int num=0;
     int y;
     int u;
@@ -229,15 +207,13 @@ int minat,maxat;
 double val_2[10];
 double success,success_perc;
     int best_neur;
-    //best_neur=fann_length_train_data(weight_data)/weight_data->num_input/weight_data->num_output-numn;
+
     best_neur=(train_data->num_input+train_data->num_output)/2;
 
   
     printf ( "\r\ninput: %d, output: %d, neurons: %d bestneur: %d",
             train_data->num_input, train_data->num_output, num_neurons_hidden,
              best_neur);
-
-
     classmin=fann_length_train_data(train_data);
     printf("\r\map [%d]: \r\n",classmin);
 		int classes[10];
@@ -254,7 +230,7 @@ double success,success_perc;
             if (train_data->output[y][u]>0.0f)
 						{
 							classes[u]++;
-							//printf("%c",chars[u]);
+
 							
 							fann_type *calc_out2;
 							calc_out2 = fann_run(ann, train_data->input[y]);
@@ -277,7 +253,7 @@ double success,success_perc;
 								}
 							}
 							
-						//	printf("\r\n%u %f %f [%f] [%f]\r\n",y,train_data->output[y][0],train_data->output[y][1],calc_out2[0],calc_out2	[1]);
+
 							
 							
 							int ok=0;
@@ -286,7 +262,7 @@ double success,success_perc;
 							if (train_data->output[y][i]>0.0f&&maxat==i)
 								ok=1;
 						//	else if(train_data->output[u][i]==0&&minat==i)
-							//	ok=1;
+
 							
 							if(ok)
 							printf("x");
@@ -296,11 +272,7 @@ double success,success_perc;
 								success++;
                 num++;
 						}
-				//		exit(0);
-       // if (num<classmin)
-         //   classmin=num;
 
-        //printf(" %d=%d ", y, num);
     }
 		printf("\r\nclasses [ ");
 		for(i=0;i<train_data->num_output;i++)
@@ -327,10 +299,8 @@ double success,success_perc;
 			printf("%c",chars[u]);
 			num++;
 		}
-		// if (num<classmin)
-		//   classmin=num;
 		
-		//printf(" %d=%d ", y, num);
+
 	}
 	
 	printf("\r\nclasses [ ");
@@ -339,8 +309,6 @@ double success,success_perc;
 	printf("] "); */
   
     fann_destroy_train ( train_data );
-  // fann_destroy_train ( test_data );
- //   fann_destroy ( ann );
 
     return 0;
 }

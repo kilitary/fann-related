@@ -44,22 +44,12 @@ int FANN_API train_callback
 {
     if (stagn_epoch<0||stagn_epoch>1000)
         stagn_epoch=0;
-
-
-    //  fann_reset_MSE(ann);
-
     mse_train = fann_test_data ( ann, train );
     bit_fail_train = fann_get_bit_fail ( ann );
-    //  		fann_test ( ann, train_data->input[0], train_data->output[0] );
-    //mse_train=fann_get_MSE(ann);
-    //fann_reset_MSE(ann);
+
     mse_test = fann_test_data ( ann, test_data );
     bit_fail_test = fann_get_bit_fail ( ann );
-
-
     weight_mse=fann_test_data(ann,weight_data);
-
-
     if (prev_mse-mse_train>0)
     {
         prev_mse_chg[cur_mse_chg]=prev_mse-mse_train;
@@ -82,11 +72,7 @@ int FANN_API train_callback
 
         for ( i=0;i<60;i++)
             mse_chg+=prev_mse_chg[i];
-
-        //mse_chg=mse_chg;
         mse_min=mse_chg*60.0f;
-
-
         double mse_left=0;
         mse_left=(mse_train-desired_error);
         if (mse_min>0)
@@ -126,8 +112,6 @@ int FANN_API train_callback
         fann_save ( ann, "bb-normal.net" );
         lowest_test_mse_epoch=cur_epochs;
         min_mse_test=mse_test;
-
-
     }
 
     if (mse_train<min_mse_train)
@@ -136,21 +120,15 @@ int FANN_API train_callback
         fann_save ( ann, "bb-normal-train.net" );
         min_mse_train=mse_train;
     }
-
-    //if (mse_test>=prev_mse_test)
     //{
-    //  stagn_epoch=(stagn_epoch?stagn_epoch:0.1)*1.35;
-    //}
 
-//   fann_set_learning_momentum ( ann, ( min ( mse_test, mse_train ) / max ( mse_test, mse_train ) ) *1.0f );
+    //}
 
     /* if ( prev_mse - mse_test < 0.01 && last_bads++>=4 )
      {
 
          do
          {
-             //func_num=func_num+rand()%4;
-             //fann_set_training_algorithm(ann, func_num);
              if ( fann_get_learning_rate ( ann ) <=1.0 )
              {
                  fann_set_learning_rate ( ann, fann_get_learning_rate ( ann ) +0.01f );
@@ -188,22 +166,12 @@ int FANN_API train_callback
 
     rinc=(rand()%(sizeof(rfactors)/sizeof(double)-1));
     rinc=rfactors[(int)rinc];
-//fann_set_rprop_increase_factor(ann, rinc);
-
-
-
 
     double l;
     l=(rand()) % 10;
-    //fann_get_learning_rate ( ann )-
-    //fann_set_learning_rate ( ann, 0.1f+(l*0.1) );
-
-
     /*                                               */
     prev_mse_test=mse_test;
 
-    //	if(prevbitfail<=bit_fail_train)
-    //		stagn_epoch=(stagn_epoch?stagn_epoch:0.1)*0.05;
     if (mse_train<prev_mse)
         stagn_epoch=(stagn_epoch>=0.01?stagn_epoch:0.1)*0.95;
     else  if (mse_train>=prev_mse)
@@ -211,13 +179,9 @@ int FANN_API train_callback
 
     if (stagn_epoch>=0.04f&&cur_epochs-stpns_epoch>5000)
     {
-
-
         double stepnesses[] = {0.15f,0.5f,0.01f,0.25f,0.50f,0.75f,1.0f};
 
         stpns=(rand()%(sizeof(stepnesses)/sizeof(double)-1));
-
-
         stpns=stepnesses[(int)stpns];
         int nl;
         nl=1+rand()%(fann_get_num_layers(ann));
@@ -226,13 +190,13 @@ int FANN_API train_callback
 
         if (nl!=0)
             fann_set_activation_steepness_layer(ann, 	stpns, nl);
-        // fann_set_activation_steepness_layer(ann, stpns, 1);
+
         stpns_epoch=cur_epochs;
         stagn_epoch=stagn_epoch*0.2;
     }
     else
     {
-        //	printf(" %d",epochs-stpns_epoch);
+
     }
     double rdec;
     if ((mse_train>=prev_mse||mse_train>0.01f||mse_test>0.01f) &&
@@ -241,20 +205,8 @@ int FANN_API train_callback
         rdec=(rand()%100)*0.001f;
         if (!rdec)
             rdec=0.01f;
-        // fann_set_activation_function_hidden ( ann,  rand()*0.81);
+
         printf(" * rprop_increase_factor %.2f",rdec);
-        //	rebuild_functions();
-
-        // fann_set_rprop_increase_factor(ann, rinc);
-
-
-
-        //fann_set_training_algorithm ( ann, nextalgo);//);
-
-      //  fann_set_learning_rate ( ann, (rand()%10)*0.1f);//0.9f );
-
-        //		fann_set_rprop_decrease_factor(ann, rdec);
-
         stagn_epoch=stagn_epoch*0.2;
 
         prevsarep=cur_epochs;
@@ -263,9 +215,9 @@ int FANN_API train_callback
         nextalgo=0;
     if (cur_epochs>555&&stagn_epoch>=1.0f)
     {
-        //	fann_set_activation_function_hidden ( ann,  FANN_SIGMOID_SYMMETRIC_STEPWISE);
+
         nextalgo=(rand()%1) ? FANN_TRAIN_QUICKPROP : FANN_TRAIN_SARPROP;
-        // fann_set_training_algorithm ( ann, nextalgo );
+
         stagn_epoch=0;
     }
 
@@ -278,28 +230,16 @@ int FANN_API train_callback
     calc1=fann_length_train_data(test_data)-100;
     calc2=rand()%fann_length_train_data(train_data);
     printf(" cal1 %u cal2 %u",calc1,calc2);
-    //fann_scale_input(ann, test_data->input[calc1]);
-    //fann_scale_input(ann, train_data->input[calc2]);
-    //	fann_scale_output(ann, test_data->input[calc1]);
+
     calc_out = fann_run(ann, test_data->input[calc1]);
     fann_descale_output(ann, calc_out);
     double val_1[10];
     memcpy(&val_1,calc_out, sizeof(double)*3);
-    //fann_scale_input(ann, train_data->input[calc2]);
+
     calc_out2 = fann_run(ann, train_data->input[calc2]);
     fann_descale_output(ann,calc_out2);
     double val_2[10];
     memcpy(&val_2,  calc_out2, sizeof(double)*3);
-
-    //fann_descale_input(ann, train_data->input[calc2]);
-    //fann_descale_input(ann, test_data->input[calc1]);
-    //calc_out = fann_test(ann, test_data->input[calc1], test_data->output[calc1]);
-//	calc_out2 = fann_test(ann, train_data->input[calc2], train_data->output[calc2]) ;
-
-
-
-
-
 //%s lr %.02f stpns %.2f stg %.2f rinc %.2f rdec %.2f hleft %.2f
     /* FANN_TRAIN_NAMES[ fann_get_training_algorithm ( ann ) ],
     fann_get_learning_rate ( ann ),
@@ -328,8 +268,6 @@ int FANN_API train_callback
       cln_test_data->output[calc1][2]
     );
 
-//fann_reset_MSE(ann);
-
     return 1;
 
 }
@@ -351,7 +289,7 @@ int main ( int argc, char **argv )
 
     if (argc>2)
     {
-        //desired_error=atof(argv[2]);
+
         numn=atoi(argv[1]);
         l1n=atoi(argv[2]);
         if (argc>3)
@@ -372,20 +310,16 @@ int main ( int argc, char **argv )
 
     train_data = fann_read_train_from_file ( "bb-train-unscaled.dat" );
     test_data = fann_read_train_from_file ( "bb-test-unscaled.dat" );
-    // fann_scale_train_data ( train_data, 0, 1.54 );
-    //  fann_scale_train_data ( test_data, 0, 1.54 );
     weight_data=fann_merge_train_data(train_data,test_data);
 
     cln_weight_data=fann_duplicate_train_data(weight_data);
     cln_test_data=fann_duplicate_train_data(test_data);
     cln_train_data=fann_duplicate_train_data(train_data);
 
-    //num_neurons_hidden = atoi ( argv[1] );
-
     if ( ( ann = fann_create_from_file ( "bb-normal.net" ) ) !=NULL )
     {
         printf ( "Loaded normal network %p.\n",ann );
-        //fann_print_connections(ann);
+
         if (num_neurons_hidden == -1)
         {
             printf("reset, numo %d\r\n",ann->num_output);
@@ -401,13 +335,9 @@ int main ( int argc, char **argv )
     int u;
     int x;
     unsigned reject;
-
-
     printf("classes [ ");
     for (y=0;y<train_data->num_output;y++)
     {
-
-
         num=0;
         for (u=0;u<fann_length_train_data(train_data);u++)
             if (train_data->output[u][y]==1.0f)
@@ -426,10 +356,10 @@ int main ( int argc, char **argv )
             if (train_data->output[j][x]<=0.0f)
                 reject++;
         //	else if(reject)
-        //	printf("no %d ok - %f\n",reject,train_data->output[j][x]);
+
         if (reject>=train_data->num_output)
         {
-            //	printf(" rule %d: %.4f %.4f %.4f\n", j, train_data->output[j][0],
+
             //	train_data->output[j][1],
             //	train_data->output[j][2]);
             reject_total++;
@@ -437,8 +367,6 @@ int main ( int argc, char **argv )
     }
     printf(" reject=%d", reject_total);
     printf(" ]");
-
-
 
     int best_neur;
     best_neur=fann_length_train_data(train_data)/train_data->num_input/train_data->num_output-numn;
@@ -471,88 +399,36 @@ int main ( int argc, char **argv )
         }
 
         int mintraining=0;
-//			for(int i=0;i<numn;i++)
+
         mintraining=(fann_get_total_neurons(ann)*(numn*4*2));
 
         printf ( "Creating normal network %p. minimum cases: %u, %.2f per class",ann ,mintraining,
                  ((double)mintraining*0.9/(double)train_data->num_output));
-
-        //	fann_init_weights ( ann, train_data );
-
-
-
-
         fann_set_activation_function_hidden ( ann,FANN_SIGMOID_SYMMETRIC);
         fann_set_activation_function_output ( ann,FANN_LINEAR_PIECE_SYMMETRIC );
-
-
-        //	 fann_set_activation_function_layer(ann, FANN_SIGMOID_STEPWISE ,1);
-        // fann_set_activation_function_layer(ann,FANN_ELLIOT ,2);
-        // fann_set_activation_function_layer(ann,  FANN_GAUSSIAN_SYMMETRIC,3);
-
-
-        //fann_set_activation_function_layer(ann,FANN_LINEAR_PIECE_SYMMETRIC,5);
-
-        //	fann_set_activation_steepness_layer(ann, 0.65f, 1);
-        //	fann_set_activation_steepness_layer(ann, 1.0f, 2);
-        //fann_set_activation_steepness_layer(ann, 1.0f, 3);
-        //fann_set_activation_steepness_layer(ann, 1.0f, 4);
-        //fann_set_activation_steepness_layer(ann, 0.25f, 5);
-
-        //	fann_set_activation_steepness_layer(ann, 1.0f, 2);
-
-        //fann_set_activation_steepness_layer(ann, 1.0f, 1);
-
-        // 	fann_set_bit_fail_limit(ann, 0.08f);
-
-
-
-
-
-
         if (fann_set_scaling_params(ann, train_data,-1.0f,1.8f,0.0f, 1.0f)==-1)
             printf("set scaling error: %s\n",fann_get_errno(ann));
-
-        //   fann_scale_train_input(ann,train_data);
-        // fann_scale_output_train_data(train_data,0.0f,1.0f);
-        //   fann_scale_input_train_data(train_data, -1.0,0.0f);
-        // fann_scale_output_train_data(test_data,-1.0f,1.0f);
-        // fann_scale_input_train_data(test_data, -1.0,1.0f);
         fann_scale_train(ann,train_data);
         fann_scale_train(ann,weight_data);
-        //     fann_scale_train(ann,test_data);
+
         fann_set_training_algorithm ( ann, FANN_TRAIN_RPROP );
-
-
-        //  fann_set_activation_steepness_layer(ann, 1.0f, 1);
-
-
-        //	fann_randomize_weights ( ann, -0.4f, 0.4f );
 
         fann_init_weights ( ann, train_data );
 		rebuild_functions();
-        //	fann_set_rprop_increase_factor(ann, 1.3f);
+
     }
     else
     {
         fann_scale_train(ann,train_data);
         fann_scale_train(ann,weight_data);
-//		fann_scale_train(ann,test_data);
+
         fann_set_training_algorithm ( ann, FANN_TRAIN_RPROP);
-
-
     }
 
     
-
-
     printf ( "train_data=%p, count: %d input: %d, output: %d, neurons: %d bestneur: %d\n",
              train_data, fann_length_train_data(train_data), train_data->num_input, train_data->num_output, num_neurons_hidden,
              best_neur);
-
-//   fann_set_activation_steepness_layer(ann, 0.75f, 1);
-    //fann_set_activation_steepness_layer(ann, 0.25f, 2);
-
     fann_set_train_error_function ( ann, FANN_ERRORFUNC_LINEAR );
     fann_set_train_stop_function(ann, FANN_STOPFUNC_MSE);
     nextalgo=fann_get_training_algorithm ( ann ) ;
@@ -561,10 +437,6 @@ int main ( int argc, char **argv )
 
     fann_set_callback ( ann, train_callback );
 
-    //fann_scale_output_train_data(cln_train_data);
-    //fann_scale_output_train_data(cln_test_data);
-
-    //  fann_scale_train_data(test_data,-0.00843000, 0.01202000);
     fann_reset_MSE ( ann );
     fann_train_on_data ( ann, train_data, max_epochs, epochs_between_reports, desired_error );
 
@@ -606,16 +478,10 @@ void rebuild_functions(void)
         double stp;
 
         stp=rand()  % 100;
-
-        //if(l==1)
-        //	nfunc=FANN_SIGMOID_STEPWISE;
-
         fann_set_activation_steepness_layer(ann, 	0.1+(stp*0.01), l);
         fann_set_activation_function_layer(ann,nfunc,l);
         printf("<lay#%-02d %s:%-4.02f> ", l, FANN_ACTIVATIONFUNC_NAMES[	fann_get_activation_function(ann,l,0)],
                fann_get_activation_steepness(ann,l,0));
-
-
     }
     printf("]\r\n");
 }

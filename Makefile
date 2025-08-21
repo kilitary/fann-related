@@ -1,16 +1,65 @@
-# (c) 2016 Sergey Efilov (contaminated with 30% of v2k morons noise)
-all:
-	g++  train.cpp  -o train.exe -O3 -march=nocona   -g  -lfann -lm -Wfatal-errors -w -fpermissive
-	gcc  create.c  -o create.exe  -O3 -march=nocona  -ggdb  -lfann -lm -Wfatal-errors -w
-	g++ run.c -o run.exe -lfann -fpermissive -w
-	#g++ find.cpp -o findnet.exe -lfann -fpermissive -w
-	g++ data.cpp -o data.exe -lfann -fpermissive -w
-	#g++ mutate.cpp -o mutate.exe -lfann -fpermissive -w
-	#g++ work.c -o work.exe -lfann -fpermissive -w -lWinmm
-#	gcc  fann_normal.c -O3 -march=nocona -lm -o fann_nor -g  -lfann
-#	g++  cascade.c  -o cascade.exe -O3 -march=nocona   -g  -lfann -lm -Wfatal-errors -w
-	#g++  -o lsnn.exe lsnn.c -O3 -march=nocona   -g  -lfann -lm -Wfatal-errors -w
-         g++ ctruck.cpp -o cyberDrug -O99 -march=x64 -g -lfann -lm -fpermissive 
-	 # ^ no -w & no -Wfatal-errors ^ chegerap nau
+# FANN Neural Network Training Tools Makefile
+# Optimized compilation settings for neural network training
 
-# (c) 2022 Sergey Efilov (contaminated with 79% of v2k morons noise)
+CC = gcc
+CXX = g++
+CFLAGS = -O3 -g -Wall -Wextra
+CXXFLAGS = -O3 -g -Wall -Wextra -fpermissive
+LIBS = -lfann -lm
+
+# Common object file
+COMMON_OBJ = fann_common.o
+
+# Core utilities
+CORE_TARGETS = train.exe create.exe run.exe data.exe
+
+# Optional utilities (uncomment to build)
+OPTIONAL_TARGETS = findnet.exe mutate.exe fann_nor.exe cascade.exe lsnn.exe
+
+.PHONY: all core optional clean
+
+all: core
+
+core: $(CORE_TARGETS)
+
+optional: $(OPTIONAL_TARGETS)
+
+# Common object file
+fann_common.o: fann_common.c fann_common.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+train.exe: train.cpp $(COMMON_OBJ)
+	$(CXX) $(CXXFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
+
+create.exe: create.c $(COMMON_OBJ)
+	$(CC) $(CFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
+
+run.exe: run.c $(COMMON_OBJ)
+	$(CXX) $(CXXFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
+
+data.exe: data.cpp $(COMMON_OBJ)
+	$(CXX) $(CXXFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
+
+findnet.exe: find.cpp $(COMMON_OBJ)
+	$(CXX) $(CXXFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
+
+mutate.exe: mutate.cpp $(COMMON_OBJ)
+	$(CXX) $(CXXFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
+
+fann_nor.exe: fann_normal.c $(COMMON_OBJ)
+	$(CC) $(CFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
+
+cascade.exe: cascade.c $(COMMON_OBJ)
+	$(CC) $(CFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
+
+lsnn.exe: lsnn.c $(COMMON_OBJ)
+	$(CC) $(CFLAGS) $< $(COMMON_OBJ) -o $@ $(LIBS)
+
+clean:
+	rm -f *.exe *.o *.backup
+
+install-deps:
+	@echo "Install FANN library:"
+	@echo "Ubuntu/Debian: sudo apt-get install libfann-dev"
+	@echo "CentOS/RHEL: sudo yum install fann-devel"
+	@echo "macOS: brew install fann"

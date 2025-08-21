@@ -19,8 +19,6 @@ int main(int argc,char*argv[])
     }  	
     else
     {
-
-    //    ann = fann_create_from_file ( "train.net" );
         printf("следууюющий!",ffann);
         //return 1;
     }
