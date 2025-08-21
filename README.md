@@ -66,16 +66,17 @@ mutagen user https://bitbucket.org/axis9/forexai_dll_mt4/wiki/Home
 
 
 
-а, и еще.
+а, и еще для приклонского:
 
 ed IT: ERROR_SUKCESS
 
 
 
 
-т*ы* пидор
+т*ы* Аiдриллисеусскайт'э  Миабанкмапидзэ Сливаторов nl2br (*clasarmed \\nit. reads only X or Z (when pushed intO))
 
 edi T: ERROR_Denied that I 
 
 
 
+revert as aio wish
