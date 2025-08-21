@@ -1,4 +1,4 @@
-For EXample 
+fOR Examples 
 
 
 FANN networks [+ forex tasks that was applied to it using this software]
