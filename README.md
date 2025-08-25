@@ -128,3 +128,5 @@ Public domain - use freely for any purpose.
 - Includes forex trading specific optimizations
 - Cross-platform compatible (Linux/Windows)
 - Real-time training control via keyboard input
+
+МОЛЧАТЬ!!"1
