@@ -365,9 +365,9 @@ checkpoint = ModelCheckpoint(
 import optuna
 
 def objective(trial):
-    lr = trial.suggest_loguniform('lr', 1e-5, 1e-1)
+    lr = trial.suggest_float('lr', 1e-5, 1e-1, log=True)
     hidden_size = trial.suggest_int('hidden', 20, 200)
-    dropout = trial.suggest_uniform('dropout', 0.1, 0.5)
+    dropout = trial.suggest_float('dropout', 0.1, 0.5)
     # ... train model, return validation metric
     return val_hit_ratio
 
@@ -386,13 +386,13 @@ For faster iteration:
 
 ```python
 # Single GPU
-trainer = pl.Trainer(gpus=1)
+trainer = pl.Trainer(devices=1, accelerator='gpu')
 
 # Multi-GPU (4x faster)
-trainer = pl.Trainer(gpus=4, strategy='ddp')
+trainer = pl.Trainer(devices=4, accelerator='gpu', strategy='ddp')
 
 # Multi-machine (for large-scale)
-trainer = pl.Trainer(num_nodes=4, gpus=4)
+trainer = pl.Trainer(num_nodes=4, devices=4, accelerator='gpu')
 ```
 
 ---
@@ -670,7 +670,8 @@ class ForexLSTM(pl.LightningModule):
 model = ForexLSTM()
 trainer = pl.Trainer(
     max_epochs=1000,
-    gpus=1,
+    devices=1,
+    accelerator='gpu',
     callbacks=[
         EarlyStopping(monitor='val_hit_ratio', patience=25, mode='max'),
         ModelCheckpoint(monitor='val_hit_ratio', mode='max')
