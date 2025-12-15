@@ -10,9 +10,6 @@
 
 # Training data and results (generated)
 *_hist.dat
-train_hist.dat
-mutate_hist.dat
-cascade_hist.dat
 
 # Large data files
 data.txt
