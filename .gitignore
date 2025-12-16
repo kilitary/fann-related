@@ -1,0 +1,30 @@
+# Compiled executables
+*.exe
+*.out
+*.o
+*.so
+*.dll
+
+# FANN network files (generated during training)
+*.net
+
+# Training data and results (generated)
+*_hist.dat
+
+# Large data files
+data.txt
+ls.txt
+
+# Build artifacts
+cyberDrug
+
+# Editor and IDE files
+*.layout
+*.dev
+*.swp
+*.swo
+*~
+
+# OS specific
+.DS_Store
+Thumbs.db

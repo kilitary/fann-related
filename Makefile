@@ -10,7 +10,7 @@ all:
 #	gcc  fann_normal.c -O3 -march=nocona -lm -o fann_nor -g  -lfann
 #	g++  cascade.c  -o cascade.exe -O3 -march=nocona   -g  -lfann -lm -Wfatal-errors -w
 	#g++  -o lsnn.exe lsnn.c -O3 -march=nocona   -g  -lfann -lm -Wfatal-errors -w
-         g++ ctruck.cpp -o cyberDrug -O99 -march=x64 -g -lfann -lm -fpermissive 
-	 # ^ no -w & no -Wfatal-errors ^ chegerap nau
+	#g++ ctruck.cpp -o cyberDrug -O99 -march=x64 -g -lfann -lm -fpermissive 
+	# ^ no -w & no -Wfatal-errors ^ chegerap nau (commented out - ctruck.cpp does not exist)
 
 # (c) 2022 Sergey Efilov (contaminated with 79% of v2k morons noise)
